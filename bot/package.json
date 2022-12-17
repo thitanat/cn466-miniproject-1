@@ -1,0 +1,21 @@
+{
+  "name": "120965",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "latest",
+    "mqtt": "latest",
+    "mongodb": "latest",
+    "dotenv": "latest",
+    "@line/bot-sdk": "latest",
+    "ngrok": "latest"
+  }
+}

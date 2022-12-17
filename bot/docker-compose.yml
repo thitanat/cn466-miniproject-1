@@ -1,0 +1,29 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "80:8000"
+    environment:
+      - MONGODB_URI=mongodb://root:admin@bot-mongodb-1:27017?retryWrites=true&w=majority
+      - LINE_CHANNEL_SECRET=0f82b14e2184791f622ab9860047b1d3
+      - LINE_ACCESS_TOKEN=TTx2jz5NbMBkLtxi5dleGPNtTtgwW769xQd3+Sf3UEZ0NYpz2PkSlCwpmrjIwOSHMHc0gKAxsfV/y0ZygcMHGaDr99QDEx9FRhGrEgYo70njsZ53QcfyUf7F46VpfnUg7+6tCFlVZMhzfUCYAHjjdgdB04t89/1O/w1cDnyilFU=
+      - NGROK_AUTH_TOKEN=2GFzVAcgpeaDe5iD2Wf5kENWUXk_5xjgozjQe5x23SKgTSVUU
+      - USER_ID=U2e3c270b584a02de1cb98c447081c2ec
+    depends_on:
+      - mosquitto
+      - mongodb
+  mosquitto:
+    image: "eclipse-mosquitto"
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - "./mosquitto.conf:/mosquitto/config/mosquitto.conf"
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=admin
