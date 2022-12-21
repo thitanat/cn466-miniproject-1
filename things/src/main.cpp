@@ -58,10 +58,34 @@ void setupMQTT()
   mqttClient.connect("ESP32Client");
 }
 
+void reconnect()
+{
+  // Loop until we're reconnected
+  while (!mqttClient.connected())
+  {
+    Serial.print("Attempting MQTT connection...");
+    // Attempt to connect
+    if (mqttClient.connect("ESP32Client"))
+    {
+      Serial.println("connected");
+      // Subscribe
+      mqttClient.subscribe("cn466/cucumber_4/sensor");
+    }
+    else
+    {
+      Serial.print("failed, rc=");
+      Serial.print(mqttClient.state());
+      Serial.println(" try again in 5 seconds");
+      // Wait 5 seconds before retrying
+      delay(5000);
+    }
+  }
+}
+
 void setup()
 {
   Wire.begin(41, 40, (int64_t)100000);
-  WiFi.mode(WIFI_STA);
+  WiFi.mode(WIFI_AP_STA);
   Serial.begin(115200);
 
   if (bmp.begin(0x76))
@@ -76,6 +100,7 @@ void setup()
   bool res;
   // res = wm.autoConnect(); // auto generated AP name from chipid
   // res = wm.autoConnect("AutoConnectAP"); // anonymous ap
+  // wifiManager.resetSettings();
   res = wifiManager.autoConnect("AutoConnectAP", "password"); // password protected ap
 
   if (!res)
@@ -90,7 +115,6 @@ void setup()
   }
 
   pinMode(2, OUTPUT); // prepare LED
-  pinMode(TRIGGER_PIN, INPUT_PULLUP);
   digitalWrite(2, LOW);
 
   setClock();
@@ -100,32 +124,18 @@ void setup()
 void loop()
 {
   // put your main code here, to run repeatedly:
-  if (digitalRead(TRIGGER_PIN) == LOW)
+
+  if (!mqttClient.connected())
   {
-    wifiManager.resetSettings();
-    bool res;
-    // res = wm.autoConnect(); // auto generated AP name from chipid
-    // res = wm.autoConnect("AutoConnectAP"); // anonymous ap
-    res = wifiManager.autoConnect("AutoConnectAP", "password"); // password protected ap
-
-    if (!res)
-    {
-      Serial.println("Failed to connect");
-      // ESP.restart();
-    }
-    else
-    {
-      // if you get here you have connected to the WiFi
-      Serial.println("connected...yeey :)");
-    }
+    reconnect();
   }
-
   mqttClient.loop();
-  long now = millis();
 
+  long now = millis();
   if (now - lastMsg > 5000)
   {
     lastMsg = now;
+
     char json_body[200];
     const char json_tmpl[] = "{\"pressure\": %.2f,"
                              "\"temperature\": %.2f,"
@@ -137,6 +147,6 @@ void loop()
     float humidity = humid.relative_humidity;
     sprintf(json_body, json_tmpl, pressure, temperature, humidity);
     Serial.println(json_body);
-    mqttClient.publish("cn466/esp32s2_group_2/sensor", json_body);
+    mqttClient.publish("cn466/cucumber_4/sensor", json_body);
   }
 }
