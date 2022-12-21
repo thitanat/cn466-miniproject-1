@@ -25,9 +25,9 @@ Repository นี้เป็นส่วนหนึ่งของรายว
 Channel Massaging API
 
 <p float="left">
-  <img src="/Example/1.png" width="100" />
-  <img src="/Example/2.png" width="100" /> 
-  <img src="/Example/3.png" width="100" />
-  <img src="/Example/4.png" width="100" />
+  <img src="/Example/1.png" width="200" />
+  <img src="/Example/2.png" width="200" /> 
+  <img src="/Example/3.png" width="200" />
+  <img src="/Example/4.png" width="200" />
 </p>
 ตัวอย่างแชทระหว่างผู้ใช้กับ LINE Bot
