@@ -21,7 +21,7 @@ Repository นี้เป็นส่วนหนึ่งของรายว
 
 ## ภาพรวมของโครงงาน
 
-![Channel Massaging API](/example/image.png)
+![Channel Massaging API](/Example/image.png)
 Channel Massaging API
 
 ![Massage1](/Example/1.png)
