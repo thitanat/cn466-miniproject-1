@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/onsenui/css/onsen-css-components.min.css"
+    />
+    <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+    <script
+      charset="utf-8"
+      src="https://static.line-scdn.net/liff/edge/2/sdk.js"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js"
+      type="text/javascript"
+    ></script>
+    <title>LIFF App</title>
+  </head>
+  <body>
+    <h1>Hello, World!</h1>
+    <ons-navigator swipeable id="myNavigator" page="page1.html"></ons-navigator>
+
+    <template id="page1.html">
+      <ons-page id="page1">
+        <ons-toolbar>
+          <div class="center">Alert THP</div>
+        </ons-toolbar>
+
+        <ons-list>
+          <ons-list-header>Sensors</ons-list-header>
+          <ons-list-item>
+            <div class="center">Temperature</div>
+            <div class="right">
+              <ons-input placeholder="waiting" id="temp_value"></ons-input>
+            </div>
+          </ons-list-item>
+          <ons-list-item>
+            <div class="center">Humidity</div>
+            <div class="right">
+              <ons-input placeholder="waiting" id="humid_value"></ons-input>
+            </div>
+          </ons-list-item>
+          <ons-list-item>
+            <div class="center">Pressure</div>
+            <div class="right">
+              <ons-input placeholder="waiting" id="pressure_value"></ons-input>
+            </div>
+          </ons-list-item>
+        </ons-list>
+
+        <ons-button modifier="large" id="send-button">Send</ons-button>
+      </ons-page>
+    </template>
+
+    <script>
+      let client = new Paho.MQTT.Client(
+        "broker.hivemq.com",
+        8884,
+        "esp32-client"
+      );
+      var data_idx = 0;
+
+      // set callback handlers
+      client.onConnectionLost = onConnectionLost;
+      client.onMessageArrived = onMessageArrived;
+
+      // connect the client
+      client.connect({ onSuccess: onConnect, useSSL: true });
+
+      function onConnect() {
+        // Once a connection has been made, make a subscription and send a message.
+        console.log("onConnect");
+        client.subscribe("cn466/cucumber_4/sensor");
+      }
+
+      function onConnectionLost(responseObject) {
+        if (responseObject.errorCode !== 0) {
+          console.log("onConnectionLost:" + responseObject.errorMessage);
+        }
+      }
+
+      // called when a message arrives
+      function onMessageArrived(message) {
+        console.log("onMessageArrived:" + message.payloadString);
+        const data = JSON.parse(message.payloadString);
+        console.log(data);
+        const tempVal = document.getElementById("temp_value");
+        tempVal.innerHTML = data.temperature + " °C";
+        const humidVal = document.getElementById("humid_value");
+        humidVal.innerHTML = data.humidity + " rH";
+        const pressureVal = document.getElementById("pressure_value");
+        pressureVal.innerHTML = data.pressure + " hPa";
+      }
+      document.addEventListener("init", () => {
+        liff
+          .init({
+            liffId: "1657755264-b3ogKP2N",
+          })
+          .catch((err) => {
+            console.log(err.code, err.message);
+          });
+      });
+    </script>
+  </body>
+</html>
