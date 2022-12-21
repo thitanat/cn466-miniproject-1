@@ -58,9 +58,9 @@ mqttClient.on("message", function (topic, message) {
   const msg = JSON.parse(message.toString());
   try_insert(msg.pressure, msg.temperature, msg.humidity).catch(console.dir);
 
-  /*lineClient.pushMessage(process.env.USER_ID, {type: 'text', text: 'pressure : '+ msg.pressure.toString()})
-  lineClient.pushMessage(process.env.USER_ID, {type: 'text', text: 'temperature : '+ msg.temperature.toString()})
-  lineClient.pushMessage(process.env.USER_ID, {type: 'text', text: 'humidity : ' + msg.humidity.toString()})
+  /*lineClient.pushMessage(event.userID, {type: 'text', text: 'pressure : '+ msg.pressure.toString()})
+  lineClient.pushMessage(event.userID, {type: 'text', text: 'temperature : '+ msg.temperature.toString()})
+  lineClient.pushMessage(event.userID, {type: 'text', text: 'humidity : ' + msg.humidity.toString()})
   */
 
   pressure = msg.pressure;
@@ -139,12 +139,15 @@ function handleEvent(event) {
   if (event.type === 'message' || event.message.type === 'text') {
     var eventText = event.message.text.toLowerCase();
     //reply
+    console.log('event text')
+    console.log(eventText)
     if(eventText === 'temperature' ){
-      lineClient.pushMessage(process.env.USER_ID, {type: 'text', text: 'temperature : '+ temperature.toString()})   
+      console.log('event text temperature')
+      lineClient.replyMessage(event.replyToken, {type: 'text', text: 'temperature : '+ temperature.toString()});
     } else if(eventText === 'humidity'){
-      lineClient.pushMessage(process.env.USER_ID, {type: 'text', text: 'humidity : ' + humidity.toString()})
+      lineClient.replyMessage(event.replyToken, {type: 'text', text: 'humidity : ' + humidity.toString()});
     } else if(eventText === 'pressure'){
-      lineClient.pushMessage(process.env.USER_ID, {type: 'text', text: 'pressure : '+ pressure.toString()})
+      lineClient.replyMessage(event.replyToken,{type: 'text', text: 'pressure : '+ pressure.toString()});
     }      
   } else {
     // ignore non-text-message event

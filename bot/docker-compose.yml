@@ -6,10 +6,10 @@ services:
       - "80:8000"
     environment:
       - MONGODB_URI=mongodb://root:admin@bot-mongodb-1:27017?retryWrites=true&w=majority
-      - LINE_CHANNEL_SECRET=0f82b14e2184791f622ab9860047b1d3
-      - LINE_ACCESS_TOKEN=TTx2jz5NbMBkLtxi5dleGPNtTtgwW769xQd3+Sf3UEZ0NYpz2PkSlCwpmrjIwOSHMHc0gKAxsfV/y0ZygcMHGaDr99QDEx9FRhGrEgYo70njsZ53QcfyUf7F46VpfnUg7+6tCFlVZMhzfUCYAHjjdgdB04t89/1O/w1cDnyilFU=
+      - LINE_CHANNEL_SECRET=a98764b98b004e53ff56abba03415eab
+      - LINE_ACCESS_TOKEN=ENhOCzo9STukJrCaVpvJGhOTDYFvmsJFOz9Jlq9I5tg0aw0vI/GLvDQvosn25UdD/AmavVIM/mAPRrebPGrbOHjsEQt/mkQZONZezgZMk1N/lFjLnEheT5bpI1wWvyXUsUvvfhviUHxBnKkl5RCuAgdB04t89/1O/w1cDnyilFU=
       - NGROK_AUTH_TOKEN=2GFzVAcgpeaDe5iD2Wf5kENWUXk_5xjgozjQe5x23SKgTSVUU
-      - USER_ID=U2e3c270b584a02de1cb98c447081c2ec
+      - USER_ID=U2ccea333afb32dfb430645c0f8e51799
       - LIFF_CHANNEL_SECRET=e153bfa77bc06b2cc8bb8f4e0ff5f62f
     depends_on:
       - mosquitto
