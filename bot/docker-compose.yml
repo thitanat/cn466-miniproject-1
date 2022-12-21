@@ -10,6 +10,7 @@ services:
       - LINE_ACCESS_TOKEN=TTx2jz5NbMBkLtxi5dleGPNtTtgwW769xQd3+Sf3UEZ0NYpz2PkSlCwpmrjIwOSHMHc0gKAxsfV/y0ZygcMHGaDr99QDEx9FRhGrEgYo70njsZ53QcfyUf7F46VpfnUg7+6tCFlVZMhzfUCYAHjjdgdB04t89/1O/w1cDnyilFU=
       - NGROK_AUTH_TOKEN=2GFzVAcgpeaDe5iD2Wf5kENWUXk_5xjgozjQe5x23SKgTSVUU
       - USER_ID=U2e3c270b584a02de1cb98c447081c2ec
+      - LIFF_CHANNEL_SECRET=e153bfa77bc06b2cc8bb8f4e0ff5f62f
     depends_on:
       - mosquitto
       - mongodb

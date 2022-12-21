@@ -3,9 +3,14 @@ const mqtt = require("mqtt");
 const { MongoClient } = require("mongodb");
 const line = require("@line/bot-sdk");
 const ngrok = require("ngrok");
+const e = require("express");
 
 const HOST = "0.0.0.0";
 const PORT = process.env.PORT || 8000;
+
+let pressure;
+let temperature;
+let humidity;
 
 // use custom env
 require("dotenv").config();
@@ -16,7 +21,18 @@ const line_cfg = {
   channelSecret: process.env.LINE_CHANNEL_SECRET,
 };
 
+//config liff channel
+const liff_cfg = {
+  channelAccessToken: process.env.LINE_ACCESS_TOKEN,
+  channelSecret: process.env.LIFF_CHANNEL_SECRET,
+};
+
+
+
 const app = express();
+
+//liff---
+//-----
 
 app.get("/", async (req, res) => {
   const value = parseInt(req.query.value);
@@ -41,9 +57,15 @@ mqttClient.on("message", function (topic, message) {
   console.log(message.toString());
   const msg = JSON.parse(message.toString());
   try_insert(msg.pressure, msg.temperature, msg.humidity).catch(console.dir);
-  lineClient.pushMessage(process.env.USER_ID, {type: 'text', text: 'pressure : '+ msg.pressure.toString()})
+
+  /*lineClient.pushMessage(process.env.USER_ID, {type: 'text', text: 'pressure : '+ msg.pressure.toString()})
   lineClient.pushMessage(process.env.USER_ID, {type: 'text', text: 'temperature : '+ msg.temperature.toString()})
   lineClient.pushMessage(process.env.USER_ID, {type: 'text', text: 'humidity : ' + msg.humidity.toString()})
+  */
+
+  pressure = msg.pressure;
+  temperature = msg.temperature;
+  humidity = msg.humidity
 });
 
 
@@ -113,16 +135,21 @@ app.post("/callback", line.middleware(line_cfg), (req, res) => {
 });
 
 function handleEvent(event) {
-  if (event.type !== 'message' || event.message.type !== 'text') {
+  
+  if (event.type === 'message' || event.message.type === 'text') {
+    var eventText = event.message.text.toLowerCase();
+    //reply
+    if(eventText === 'temperature' ){
+      lineClient.pushMessage(process.env.USER_ID, {type: 'text', text: 'temperature : '+ temperature.toString()})   
+    } else if(eventText === 'humidity'){
+      lineClient.pushMessage(process.env.USER_ID, {type: 'text', text: 'humidity : ' + humidity.toString()})
+    } else if(eventText === 'pressure'){
+      lineClient.pushMessage(process.env.USER_ID, {type: 'text', text: 'pressure : '+ pressure.toString()})
+    }      
+  } else {
     // ignore non-text-message event
     return Promise.resolve(null);
   }
-
-  // create a echoing text message
-  const echo = { type: 'text', text: event.message.text };
-
-  // use reply API
-  return lineClient.replyMessage(event.replyToken, echo);
 }
 
 app.listen(PORT, () => {
