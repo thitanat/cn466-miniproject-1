@@ -19,3 +19,13 @@ Repository นี้เป็นส่วนหนึ่งของรายว
 3. ฐิตณัฐ ณ สงขลา 6110613210 รับผิดชอบในส่วนของ Server ที่ใช้ในการรับ-ส่งข้อมูลจาก HiveMQ Broker
 4. ปุญญ์ฐิสา แตงมั่ง 6110613236 รับผิดชอบในส่วนของการจัดการ LINE Bot และ Rich Menu ของ LINE Bot
 
+## ภาพรวมของโครงงาน
+
+![Channel Massaging API](/example/image.png)
+Channel Massaging API
+
+![Massage1](/example/1.png)
+![Massage2](/example/2.png)
+![Massage3](/example/3.png)
+![Massage3](/example/4.png)
+ตัวอย่างแชทระหว่างผู้ใช้กับ LINE Bot
