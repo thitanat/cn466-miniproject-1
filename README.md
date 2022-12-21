@@ -24,8 +24,8 @@ Repository นี้เป็นส่วนหนึ่งของรายว
 ![Channel Massaging API](/example/image.png)
 Channel Massaging API
 
-![Massage1](/example/1.png)
-![Massage2](/example/2.png)
-![Massage3](/example/3.png)
-![Massage3](/example/4.png)
+![Massage1](/Example/1.png)
+![Massage2](/Example/2.png)
+![Massage3](/Example/3.png)
+![Massage3](/Example/4.png)
 ตัวอย่างแชทระหว่างผู้ใช้กับ LINE Bot
